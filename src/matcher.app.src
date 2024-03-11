@@ -1,6 +1,6 @@
 {application, matcher, [
 	{description, "Matches Strings and Maps"},
-	{vsn, "1.0.0"},
+	{vsn, "1.0.1"},
 	{registered, []},
 %	{mod, {matcher_app, []}},
 	{applications, [
