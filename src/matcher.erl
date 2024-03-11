@@ -124,14 +124,18 @@ eval_(Provider, {'ge', A, B}) -> eval(Provider, A) >= eval(Provider, B);
 eval_(Provider, {'eq', A, B}) -> eval(Provider, A) == eval(Provider, B);
 
 eval_(Provider, {'part_of', Part, Full}) ->
-	case
-		string:find(
-			eval(Provider, Full),
-			eval(Provider, Part)
-		)
-	of
-		nomatch -> false;
-		_ -> true
+	P = eval(Provider, Part),
+	F = eval(Provider, Full),
+	case is_string(P) andalso is_string(F) of
+		true ->
+			case
+				string:find(F, P)
+			of
+				nomatch -> false;
+				_ -> true
+			end;
+		false ->
+			false
 	end;
 
 % finally we assume to have a value (not an expression)
@@ -140,6 +144,10 @@ eval_(_Provider, Expr) -> Expr.
 
 
 % --- helpers ---
+
+
+is_string(S) when is_binary(S); is_list(S) -> true;
+is_string(_) -> false.
 
 
 lowercase(S) when is_binary(S); is_list(S) -> string:lowercase(S);
